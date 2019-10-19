@@ -1,0 +1,58 @@
+{% extends 'drugs/base.html' %}
+{% block title %}Drugs Lists {% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <br><br>
+    <a href="?title=True" class="btn btn-{% if 'title' in request.GET %}warning{% else %}primary{% endif %}">A-Z </i></a>
+
+    <a href="?latest=True" class="btn btn-{% if 'latest' in request.GET %}warning{% else %}primary{% endif %}">Latest</a>
+    
+    <a href="?mine=True" class="btn btn-{% if 'mine' in request.GET %}warning{% else %}primary{% endif %}">My polls</a>
+    
+    <br> <br>
+    
+    <form class="form-inline my-2 my-lg-2">
+      <input class="form-control mr-sm-2" name="search" type="search" value="{{search}}" placeholder="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+        {% if messages %}
+                {% for message in messages %} 
+                    <div {% if message.tags %} class="{{message.tags}}" {% endif %}>
+                        {{message}}
+                    </div>
+                {% endfor %}
+        {% endif %}
+    <ul class="list-group">
+        {% for drug in drugs %}
+        <li class='list-group-item'>
+            <a href="">{{drug}}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    <br> 
+    <div class="">
+        <span class="">
+            {% if drugs.has_previous %}
+                <a href="?page=1&{{params}}">&laquo; first</a>
+                <a href="?page={{ drugs.previous_page_number }}&{{params}}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ drugs.number }} of {{ drugs.paginator.num_pages }}.
+            </span>
+
+            {% if drugs.has_next %}
+                <a href="?page={{ drugs.next_page_number }}&{{params}}">next</a>
+                <a href="?page={{ drugs.paginator.num_pages }}&{{params}}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <p></p>
+    <p></p>
+    <br>
+</div>
+
+{% endblock content %}
