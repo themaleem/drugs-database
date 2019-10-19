@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Drug Details Page{% endblock title %}
+{% block content %}
+    <p>Name : {{drug.name|upper}}</p>
+    <p>Manufacturer : {{drug.manufacturer|upper}}</p>
+    <p>Applicant_name : {{drug.applicant_name|upper}}</p>
+    <p>Country : {{drug.country|upper}}</p>
+    <p>Date approved : {{drug.date_approv|upper}}</p>
+    <p>Expiry date : {{drug.exp_date|upper}}</p>
+    <p>Nafdac number : {{drug.reg_no |upper}}</p>
+
+{% endblock content %}

@@ -12,11 +12,16 @@ def drug_list(request):
 
     if 'title' in request.GET:
         drugs=drugs.order_by('name')
+
     if 'latest' in request.GET:
-        drugs=drugs.order_by('-pub_date')
+        drugs=drugs.order_by('-date_approv')
+    
     if 'search' in request.GET:
         search_keyword=request.GET['search']
-        drugs=drugs.filter(text__icontains=search_keyword)
+        try:
+            drugs=Drug.objects.filter(reg_no=search_keyword)
+        except Drug.DoesNotExist:
+            drugs=drugs.filter(name__icontains=search_keyword)
     
     get_dict_copy=request.GET.copy()
     params=get_dict_copy.pop('page',True) and get_dict_copy.urlencode()
@@ -48,3 +53,10 @@ def drug_list(request):
 #             return render(request,"drugs/search.html",{"matches":matches})
 #     else:
 #         return render(request,"drugs/search.html",{})
+
+def drug_detail(request,drug_slug):
+    drug=Drug.objects.filter(slug=drug_slug)[0]
+    context={
+        'drug':drug
+    }
+    return render(request,'drugs/details.html',context)
