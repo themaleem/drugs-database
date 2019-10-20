@@ -33,6 +33,12 @@
             </li>
             {% endfor %}
         </ul>
+    {% elif drug_by_no %}
+        <ul class="list-group">
+            <li class='list-group-item'>
+                <a href="{% url 'drugs:details' drug_by_no.slug %}">{{drug_by_no}}</a>
+            </li>
+        </ul>
     {% else %}
     <br>
     <h4>Oops, no drugs were found. </h4>
