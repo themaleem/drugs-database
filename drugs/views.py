@@ -3,7 +3,26 @@ from .models import Drug
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.shortcuts import render,get_object_or_404,redirect
 from django.urls import reverse
-# Create your views here.
+
+
+# API IMPORTS STARTS HERE
+from rest_framework import status,generics,viewsets
+from rest_framework.response import Response
+from .serializers import DrugSerializer
+# API IMPORTS ENDS HERE 
+
+
+# API VIEWS STARTS HERE
+class DrugsList(generics.ListCreateAPIView):
+    # def get_queryset(self):
+    queryset=Drug.objects.all()[:20]     
+        # return queryset
+    serializer_class=DrugSerializer
+
+# class DrugsViewSet(viewsets.ModelViewSet):
+#     queryset=Drug.objects.all()[:20]
+#     serializer_class=DrugSerializer
+
 
 
 def drug_list(request):
@@ -55,22 +74,6 @@ def drug_list(request):
         context['drug_by_no']=drug_by_no
     return render(request,'drugs/all_drugs.html',context)
 
-# def search(request):
-    # text = request.GET.get('nafdacNo')
-    # matches = Drug.objects.filter(reg_no=text)
-    # searchdict = {
-    #     'matches': matches,
-    # }
-    # return render(request, 'drugs/search.html',)
-
-# def search(request):        
-#     if request.method == 'GET': # this will be GET now      
-#         text =  request.GET.get('nafdacNO') # do some research what it does       
-#         try:
-#             matches = drugsdb.objects.filter(name__icontains=text) # filter returns a list so you might consider skip except part
-#             return render(request,"drugs/search.html",{"matches":matches})
-#     else:
-#         return render(request,"drugs/search.html",{})
 
 def drug_detail(request,drug_slug):
     drug=Drug.objects.filter(slug=drug_slug)[0]
@@ -78,3 +81,6 @@ def drug_detail(request,drug_slug):
         'drug':drug
     }
     return render(request,'drugs/details.html',context)
+
+def home(request):
+    return render(request,'drugs/index.html')
