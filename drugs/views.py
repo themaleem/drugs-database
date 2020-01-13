@@ -40,7 +40,7 @@ def drug_list(request):
         drugs=drugs.order_by('-date_approv')
     
     if 'search' in request.GET:
-        search_keyword=request.GET['search'] #Gets the search keyword
+        search_keyword=request.GET['search'].strip() #Gets the search keyword
         try:
             #checks if keyword matches any drugs NAFDAC number
             # and drugs_by_no returns a Drug object,  then the
